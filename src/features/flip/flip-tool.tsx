@@ -6,6 +6,7 @@ import { DownloadButton } from '@/components/shared/download-button'
 import { Button } from '@/components/ui/button'
 import { flipImage } from '@/lib/image-utils'
 import { useImageProcessor } from '@/hooks/use-image-processor'
+import { trackToolUsage, GA_EVENTS } from '@/lib/analytics'
 import { Loader2, X, FlipHorizontal, FlipVertical } from 'lucide-react'
 
 const DIRECTIONS: { label: string; horizontal: boolean; vertical: boolean; icon: React.ReactNode }[] = [
@@ -17,8 +18,10 @@ const DIRECTIONS: { label: string; horizontal: boolean; vertical: boolean; icon:
 function FlipToolInner() {
   const { source, result, processing, error, loadFile, run, reset } = useImageProcessor()
 
-  const handleFlip = (h: boolean, v: boolean) =>
+  const handleFlip = (h: boolean, v: boolean) => {
+    trackToolUsage(GA_EVENTS.FLIP_IMAGE)
     run(() => flipImage(source!.file, h, v))
+  }
 
   return (
     <div className="space-y-8">
@@ -80,6 +83,7 @@ function FlipToolInner() {
                 <DownloadButton
                   blob={result.blob}
                   filename={`flipped-${source.file.name}`}
+                  toolName="flip"
                   className="w-full rounded-xl"
                 />
               </div>

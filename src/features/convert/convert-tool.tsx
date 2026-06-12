@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { convertImage, formatBytes } from '@/lib/image-utils'
 import { useImageProcessor } from '@/hooks/use-image-processor'
+import { trackToolUsage, GA_EVENTS } from '@/lib/analytics'
 import type { ImageFormat } from '@/types'
 import { Loader2, X } from 'lucide-react'
 
@@ -21,8 +22,10 @@ function ConvertToolInner() {
   const { source, result, processing, error, loadFile, run, reset } = useImageProcessor()
   const [format, setFormat] = useState<ImageFormat>('jpeg')
 
-  const handleConvert = () =>
+  const handleConvert = () => {
+    trackToolUsage(GA_EVENTS.CONVERT_IMAGE)
     run(() => convertImage(source!.file, format))
+  }
 
   return (
     <div className="space-y-8">
@@ -93,6 +96,7 @@ function ConvertToolInner() {
                 <DownloadButton
                   blob={result.blob}
                   filename={`converted-${source.file.name.replace(/\.[^.]+$/, '')}.${format === 'jpeg' ? 'jpg' : format}`}
+                  toolName="convert"
                   className="w-full rounded-xl"
                 />
               </div>

@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { resizeImage, getImageDimensions } from '@/lib/image-utils'
 import { useImageProcessor } from '@/hooks/use-image-processor'
+import { trackToolUsage, GA_EVENTS } from '@/lib/analytics'
 import { Loader2, Link2, Link2Off, X } from 'lucide-react'
 
 const PRESETS = [
@@ -48,8 +49,10 @@ function ResizeToolInner() {
     }
   }
 
-  const handleResize = () =>
+  const handleResize = () => {
+    trackToolUsage(GA_EVENTS.RESIZE_IMAGE)
     run(() => resizeImage(source!.file, Number(width), Number(height)))
+  }
 
   return (
     <div className="space-y-8">
@@ -151,6 +154,7 @@ function ResizeToolInner() {
               <DownloadButton
                 blob={result.blob}
                 filename={`resized-${source.file.name}`}
+                toolName="resize"
                 className="w-full rounded-xl"
               />
             </div>

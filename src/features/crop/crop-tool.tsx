@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { useImageProcessor } from '@/hooks/use-image-processor'
 import { canvasToBlob, loadImage } from '@/lib/image-utils'
+import { trackToolUsage, GA_EVENTS } from '@/lib/analytics'
 import { Loader2, X } from 'lucide-react'
 
 const RATIOS = [
@@ -43,6 +44,7 @@ function CropToolInner() {
 
   const handleCrop = () => {
     if (!croppedArea || !source) return
+    trackToolUsage(GA_EVENTS.CROP_IMAGE)
     run(() => cropImageBlob(source.preview, croppedArea))
   }
 
@@ -124,6 +126,7 @@ function CropToolInner() {
               <DownloadButton
                 blob={result.blob}
                 filename={`cropped-${source.file.name}`}
+                toolName="crop"
                 className="w-full rounded-xl"
               />
             </div>

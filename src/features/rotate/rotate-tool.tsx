@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { rotateImage } from '@/lib/image-utils'
 import { useImageProcessor } from '@/hooks/use-image-processor'
+import { trackToolUsage, GA_EVENTS } from '@/lib/analytics'
 import { Loader2, X, RotateCcw, RotateCw } from 'lucide-react'
 
 const QUICK_ANGLES = [
@@ -22,8 +23,10 @@ function RotateToolInner() {
   const { source, result, processing, error, loadFile, run, reset } = useImageProcessor()
   const [angle, setAngle] = useState(90)
 
-  const handleRotate = (deg?: number) =>
+  const handleRotate = (deg?: number) => {
+    trackToolUsage(GA_EVENTS.ROTATE_IMAGE)
     run(() => rotateImage(source!.file, deg ?? angle))
+  }
 
   return (
     <div className="space-y-8">
@@ -97,6 +100,7 @@ function RotateToolInner() {
               <DownloadButton
                 blob={result.blob}
                 filename={`rotated-${source.file.name}`}
+                toolName="rotate"
                 className="w-full rounded-xl"
               />
             </div>

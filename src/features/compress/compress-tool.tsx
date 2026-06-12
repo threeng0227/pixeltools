@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { compressImage, formatBytes, getSavingsPercent } from '@/lib/image-utils'
 import { useImageProcessor } from '@/hooks/use-image-processor'
+import { trackToolUsage, GA_EVENTS } from '@/lib/analytics'
 import type { CompressionPreset } from '@/types'
 import { Loader2, X } from 'lucide-react'
 import { useState } from 'react'
@@ -24,8 +25,10 @@ function CompressToolInner() {
   const [preset, setPreset] = useState<CompressionPreset>('high')
   const [quality, setQuality] = useState(80)
 
-  const handleCompress = () =>
+  const handleCompress = () => {
+    trackToolUsage(GA_EVENTS.COMPRESS_IMAGE)
     run(() => compressImage(source!.file, preset))
+  }
 
   return (
     <div className="space-y-8">
@@ -117,6 +120,7 @@ function CompressToolInner() {
                 <DownloadButton
                   blob={result.blob}
                   filename={`compressed-${source.file.name}`}
+                  toolName="compress"
                   className="w-full rounded-xl"
                 />
               </div>

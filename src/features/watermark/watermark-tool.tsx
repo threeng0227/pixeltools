@@ -11,6 +11,7 @@ import { Slider } from '@/components/ui/slider'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useImageProcessor } from '@/hooks/use-image-processor'
 import { canvasToBlob, loadImage } from '@/lib/image-utils'
+import { trackToolUsage, GA_EVENTS } from '@/lib/analytics'
 import type { WatermarkPosition } from '@/types'
 import { X } from 'lucide-react'
 
@@ -79,12 +80,14 @@ function WatermarkToolInner() {
     drawWatermark(previewCanvasRef.current)
   }, [drawWatermark, source])
 
-  const handleApply = () =>
-    run(async () => {
+  const handleApply = async () => {
+    trackToolUsage(GA_EVENTS.WATERMARK_IMAGE)
+    await run(async () => {
       const canvas = document.createElement('canvas')
       await drawWatermark(canvas)
       return canvasToBlob(canvas, 'jpeg')
     })
+  }
 
   return (
     <div className="space-y-8">
@@ -178,6 +181,7 @@ function WatermarkToolInner() {
                 <DownloadButton
                   blob={result.blob}
                   filename={`watermarked-${source.file.name}`}
+                  toolName="watermark"
                   className="w-full rounded-xl"
                 />
               )}
