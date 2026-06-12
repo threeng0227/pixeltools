@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PixelTools — Fast, Private, All-in-One Image Toolkit
+
+> Compress, resize, crop, convert and enhance images directly in your browser. Your images never leave your device.
+
+## Features
+
+- **Compress Image** — Quality presets + custom slider
+- **Resize Image** — Custom dimensions + social media presets (Instagram, Facebook, Twitter/X, YouTube)
+- **Crop Image** — Free crop + aspect ratios (1:1, 4:3, 16:9, 9:16)
+- **Convert Image** — JPG ↔ PNG ↔ WebP
+- **Rotate Image** — 90°/180°/270° or custom angle
+- **Flip Image** — Horizontal, vertical, or both
+- **Watermark Image** — Text with font size, opacity, color, and position controls
+- **100% Browser-Based** — No server upload, no account required
+
+## Tech Stack
+
+- **Framework**: Next.js 16 App Router + TypeScript
+- **UI**: Tailwind CSS v4 + shadcn/ui + Framer Motion
+- **State**: Zustand | **Forms**: React Hook Form + Zod
+- **Image**: browser-image-compression, react-easy-crop, Canvas API
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+See `.env.example`. All analytics and AdSense variables are optional — ads and tracking are automatically disabled when IDs are empty.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploy to Vercel
 
-## Learn More
+1. Push to GitHub
+2. Import at vercel.com
+3. Add env vars in Vercel dashboard
+4. Deploy
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/          # Pages (all tool routes + about/contact/legal)
+├── components/   # ads/, layout/, shared/
+├── constants/    # tools list, site config
+├── features/     # per-tool interactive components
+├── lib/          # image-utils.ts, ads.ts
+├── stores/       # Zustand
+└── types/
+```
+# pixeltools
