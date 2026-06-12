@@ -22,7 +22,7 @@ export function softwareAppSchema() {
     name: SITE_NAME,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    applicationCategory: 'GraphicsApplication',
+    applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Any (browser-based)',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     featureList: [
@@ -35,6 +35,55 @@ export function softwareAppSchema() {
       'Text watermarking',
       'Metadata viewer',
     ],
+  }
+}
+
+export function toolSchema({
+  name,
+  description,
+  url,
+}: {
+  name: string
+  description: string
+  url: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name,
+    description,
+    url,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  }
+}
+
+export function howToSchema({
+  name,
+  description,
+  steps,
+}: {
+  name: string
+  description: string
+  steps: { name: string; text: string }[]
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
   }
 }
 

@@ -49,15 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <head>
-        {adsenseClient && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
-            crossOrigin="anonymous"
-          />
-        )}
-      </head>
       <body className="min-h-screen bg-background font-sans antialiased pb-16 sm:pb-0">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
           <Navbar />
@@ -83,6 +74,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Script id="clarity-init" strategy="afterInteractive">
             {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${clarityId}");`}
           </Script>
+        )}
+
+        {adsenseClient && (
+          <Script
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+          />
         )}
       </body>
     </html>
